@@ -15,7 +15,7 @@ angular.module('Q.playlist', [
         var track = {
                           id: tracks[i].id,
                           title: tracks[i].title,
-                          artist: tracks[i].genre,
+                          artist: tracks[i].user,
                           url: tracks[i].stream_url + "?client_id=f270bdc572dc8380259d38d8015bdbe7"
                       };
         $rootScope.$apply(function(){

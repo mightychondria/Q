@@ -3,13 +3,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                <h5>Songs</h5>
-                <ul>
-                    <li ng-repeat="song in songs">
-                        <button music-player="play" add-song="song">{{ song.title }}</button>
-                        <button music-player add-song="song">+</button>
-                    </li>
-                </ul>
+
 
                 <button play-all="songs">Play all</button>
 
@@ -76,8 +70,10 @@
    <input width="80%" ng-model='query'>
    <button type="submit">SUBMIT</button>
   </form>
-  <div ng-repeat="song in songs">
-      {{song.title}} by {{song.artist}}<br>
-  </div>
+
+        <div ng-repeat = 'song in songs'>
+            <span music-player="play" add-song="song">{{ song.title }}</span>
+            <button music-player add-song="song">+</button>
+    </div>
 
 </div>
