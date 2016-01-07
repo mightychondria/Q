@@ -18,7 +18,9 @@ module.exports = {
   },
 
   getQueue: function(req, res, next) {
-
+    User.findOne({ hash: 'test' }, function(err, result) {
+      res.json(result.queue);
+    })
   },
 
   addSong: function(req, res, next) {

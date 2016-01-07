@@ -4,7 +4,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var bodyParser = require('body-parser');
 var SC = require('node-soundcloud');
-var db = require('./dbConfig')
+var db = require('./db/dbConfig')
 
 require('./routes.js')(app, express);
 

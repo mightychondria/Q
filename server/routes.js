@@ -1,7 +1,7 @@
 var userController = require('./db/userController');
 
 module.exports = function (app, express) {
-  app.get('/testdb', userController.addSong)
+  app.get('/testdb', userController.getQueue)
 };
 
 
