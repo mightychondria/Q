@@ -7,5 +7,9 @@
 #playlist {
   border: 2px solid black;
   height: 400px;
+<<<<<<< HEAD
   width:400px;
+=======
+  width:300px;
+>>>>>>> f0fc2463fc2df15fdb5d1036bad545990d49917f
 }
