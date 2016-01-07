@@ -1,0 +1,11 @@
+.centerDiv {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+}
+
+#playlist {
+  border: 2px solid black;
+  height: 400px;
+  width:300px;
+}
