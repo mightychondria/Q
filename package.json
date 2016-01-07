@@ -1,0 +1,26 @@
+{
+  "name": "Q",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jchen85/Q.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jchen85/Q/issues"
+  },
+  "homepage": "https://github.com/jchen85/Q",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.3",
+    "mongoose": "^4.3.4",
+    "node-soundcloud": "0.0.4",
+    "socket.io": "^1.4.0"
+  }
+}
