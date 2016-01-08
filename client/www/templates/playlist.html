@@ -1,9 +1,8 @@
 <div id="playlist" class="centerDiv">
-     <div class="container" ng-controller="playlistController">
+     <div class="container">
         <div class="row">
             <div class="col-md-12">
 
-                <h5>Songs</h5>
 
 
                 <button play-all="songs">Play all</button>
@@ -71,11 +70,10 @@
    <input width="80%" ng-model='query'>
    <button type="submit">SUBMIT</button>
   </form>
+
         <div ng-repeat = 'song in songs'>
             <span music-player="play" add-song="song">{{ song.title }}</span>
             <button music-player add-song="song">+</button>
     </div>
-
-
 
 </div>
