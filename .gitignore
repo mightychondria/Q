@@ -1,6 +1,8 @@
 node_modules/
 bower_components/
-client/lib/
+client/www/lib
+client/platforms/
+client/plugins/
 *.log
 
 build/

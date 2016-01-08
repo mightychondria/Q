@@ -1,6 +1,7 @@
 angular.module('Q.services', [
-'ngRoute'
+'ionic'
 ])
+
 
 .factory('Playlist', function($http){
   var getSongs = function(){
