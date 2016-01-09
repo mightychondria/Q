@@ -54,7 +54,7 @@
                 <br/>
                 <h5>Playlist</h5>
                 <ul>
-                    <li ng-repeat="song in playlist">
+                    <li ng-repeat="song in customPlaylist">
                         <a play-from-playlist="song">{{ song.title }}</a>
                         -
                         <a remove-from-playlist="song" data-index="{{$index}}">
@@ -73,7 +73,7 @@
 
         <div ng-repeat = 'song in songs'>
             <span music-player="play" add-song="song">{{ song.title }}</span>
-            <button music-player add-song="song">+</button>
+            <button music-player ng-click='addSong(song)'>+</button>
     </div>
 
 </div>

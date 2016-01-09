@@ -24,6 +24,17 @@
     <script src="js/services.js"></script>
     <script src="js/controllers.js"></script>
    <script type="text/javascript" src="lib/angular-soundmanager2/dist/angular-soundmanager2.js"></script>
+   <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+    <script>
+    var socket = io('http://localhost:8000');
+    socket.on('getQueue', function (data) {
+      console.log(data);
+    });
+
+    // socket.on('queueUpdated', function(queue){
+    //   console.log('queue Updated', queue)
+    // })
+    </script>
   </head>
   <body>
 

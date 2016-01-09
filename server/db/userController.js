@@ -5,7 +5,6 @@ module.exports = {
   addUser: function(req, res, next) {
     var newUser = new User({
       //to check with Harun and Spener
-      hash: 'test',
       queue: []
     });
     newUser.save(function(err) {
@@ -17,18 +16,19 @@ module.exports = {
     });
   },
 
-  getQueue: function(req, res, next) {
-    User.findOne({ hash: 'test' }, function(err, result) {
-      res.json(result.queue);
-    })
+  getQueue: function(callback) {
+    User.findOne({}, function(err, result) {
+      callback(result.queue);
+    });
   },
 
-  addSong: function(req, res, next) {
-    User.findOne({ hash: "test" }, function(err, result) {
-      result.queue.push({title: 'hello', artist: 'adele'});
-
-      result.save(function() {
-        res.end();
+  addSong: function(data, callback) {
+    delete data['$$hashKey'];
+    User.findOne({}, function(err, result) {
+      result.queue.push(data);
+      result.save(function(err) {
+        console.error(err);
+        callback();
       });
     });
   }
