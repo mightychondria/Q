@@ -39,13 +39,12 @@ io.on('connection', function (socket) {
   User.getQueue(function(queue) {
     socket.emit('getQueue', queue);
   });
-  // socket.emit('news', { hello: 'world' });
+
   socket.on('addSong', function (newSong) {
     User.addSong(newSong, function() {
       User.getQueue(function(queue) {
-        console.log('emitting queueUpdated');
-        socket.emit('queueUpdated', queue);
-        socket.broadcast.emit('queueUpdated', queue);
+        socket.emit('getQueue', queue);
+        socket.broadcast.emit('getQueue', queue);
       });
     });
   });

@@ -4427,18 +4427,11 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
             trackProgress = 0,
             playlist = [];
 
-        socket.on('queueUpdated', function(queue){
-            playlist = queue;
-            $rootScope.$broadcast('player:playlist', playlist);
-            console.log('queue updated', playlist);
-        });
-
         socket.on('getQueue', function(queue){
             playlist = queue;
             $rootScope.$broadcast('player:playlist', playlist);
             console.log('queue updated', playlist);
         });
-        
         
         return {
             /**
