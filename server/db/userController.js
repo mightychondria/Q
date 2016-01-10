@@ -12,7 +12,7 @@ module.exports = {
       else {
         console.log('saved new user');
       }
-      res.end();
+      // res.end();
     });
   },
 
@@ -26,6 +26,24 @@ module.exports = {
     delete data['$$hashKey'];
     User.findOne({}, function(err, result) {
       result.queue.push(data);
+      result.save(function(err) {
+        console.error(err);
+        callback();
+      });
+    });
+  },
+
+  deleteSong: function(target, callback) {
+    User.findOne({}, function(err, result) {
+
+
+      var deleteLocation;
+      result.queue.forEach(function(song, index) {
+        if (song.id === target) {
+          deleteLocation = index;
+        }
+      });
+      result.queue.splice(deleteLocation, 1);
       result.save(function(err) {
         console.error(err);
         callback();

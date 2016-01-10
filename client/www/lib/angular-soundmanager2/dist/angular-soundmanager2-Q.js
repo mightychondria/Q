@@ -4425,26 +4425,29 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
             isPlaying = false,
             volume = 90,
             trackProgress = 0,
-            playlist = [];
-
-        socket.on('queueUpdated', function(queue){
-            playlist = queue;
-            $rootScope.$broadcast('player:playlist', playlist);
-            console.log('queue updated', playlist);
-        });
-
+            playlist = [],
+            socket = io('http://localhost:8000');
+        
         socket.on('getQueue', function(queue){
             playlist = queue;
             $rootScope.$broadcast('player:playlist', playlist);
-            console.log('queue updated', playlist);
         });
-        
+
+        // socket.on('deleteSong', function(queue) {
+        //     playlist = queue;
+        //     $rootScope.$broadcast('player:playlist', playlist);
+        // });
         
         return {
             /**
              * Initialize soundmanager,
              * requires soundmanager2 to be loaded first
              */
+
+            socket: function() {
+                return socket;
+            },
+
             init: function() {
                 if(typeof soundManager === 'undefined') {
                     alert('Please include SoundManager2 Library!');
@@ -4606,7 +4609,6 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                 }
             },
             addTrack: function(track) {
-                console.log(track);
                 //check if track itself is valid and if its url is playable
                 if (!this.isTrackValid) {
                     return null;
@@ -4640,6 +4642,8 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                 //remove from playlist
                 playlist.splice(index, 1);
                 //once all done then broadcast
+
+                socket.emit('deleteSong', song);
                 
             },
             initPlayTrack: function(trackId, isResume) {
@@ -4822,34 +4826,75 @@ ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
     function($filter, angularPlayer) {
         return {
             restrict: "E",
+
+            init: function(scope) {
+
+            },
+
             link: function(scope, element, attrs) {
                 //init and load sound manager 2
                 angularPlayer.init();
-                scope.$on('track:progress', function(event, data) {
+
+                // angularPlayer.socket().on('getState', function(currentState) {
+                //     scope.$apply(function() {
+                //         console.log(currentState);
+                //     });
+                // });
+                var socket = angularPlayer.socket();
+                
+                socket.on('currentlyPlaying', function(currentTrack) {
                     scope.$apply(function() {
-                        scope.progress = data;
+                        scope.currentPlaying = currentTrack;
                     });
+                });
+
+                socket.on('currentTrackPosition', function(currentTrackPosition) {
+                    scope.$apply(function() {
+                        if ($filter('humanTime')(currentTrackPosition).indexOf('NaN') === -1) {
+                            scope.currentPostion = $filter('humanTime')(currentTrackPosition);
+                        };
+                    });
+                });
+
+                socket.on('currentTrackDuration', function(currentTrackDuration) {
+                    scope.$apply(function() {
+                        if ($filter('humanTime')(currentTrackDuration).indexOf('NaN') === -1) {
+                            scope.currentDuration = $filter('humanTime')(currentTrackDuration);
+                        };
+                    });
+                });
+
+                scope.$on('track:progress', function(event, data) {
+                    socket.emit('currentlyPlaying', angularPlayer.currentTrackData());
                 });
                 scope.$on('track:id', function(event, data) {
-                    scope.$apply(function() {
-                        scope.currentPlaying = angularPlayer.currentTrackData();
-                    });
+                    // angularPlayer.socket().emit('currentlyPlaying', angularPlayer.currentTrackData());
                 });
                 scope.$on('currentTrack:position', function(event, data) {
-                    scope.$apply(function() {
-                        scope.currentPostion = $filter('humanTime')(data);
-                    });
+                    socket.emit('currentTrackPosition', data);
+                    // scope.$apply(function() {
+                    //     scope.currentPostion = $filter('humanTime')(data);
+                    // });
                 });
                 scope.$on('currentTrack:duration', function(event, data) {
-                    scope.$apply(function() {
-                        scope.currentDuration = $filter('humanTime')(data);
-                    });
+                    socket.emit('currentTrackDuration', data);
+                    // scope.$apply(function() {
+                    //     scope.currentDuration = $filter('humanTime')(data);
+                    // });
                 });
-                scope.isPlaying = false;
-                scope.$on('music:isPlaying', function(event, data) {
+
+                socket.on('currentTrackDuration', function(data) {
                     scope.$apply(function() {
                         scope.isPlaying = data;
                     });
+                });
+
+                scope.isPlaying = false;
+                scope.$on('music:isPlaying', function(event, data) {
+                    socket.emit('isPlaying', data);
+                    // scope.$apply(function() {
+                    //     scope.isPlaying = data;
+                    // });
                 });
                 scope.playlist = angularPlayer.getPlaylist(); //on load
                 scope.$on('player:playlist', function(event, data) {

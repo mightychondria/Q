@@ -16,6 +16,7 @@
             <div class="col-md-12">
                 <!-- init soundManager2 player -->
                 <sound-manager></sound-manager>
+                <button play-all="songs">Play all</button>
 
                 <p>
                     Currently Playing: {{ currentPlaying.title }} by {{ currentPlaying.artist }} ({{ currentPostion }} / {{ currentDuration }})
@@ -72,7 +73,7 @@
   </form>
 
         <div ng-repeat = 'song in songs'>
-            <span music-player="play" add-song="song">{{ song.title }}</span>
+            <span add-song="song">{{ song.title }}</span>
             <button music-player add-song='song'>+</button>
     </div>
 
