@@ -31,6 +31,24 @@ module.exports = {
         callback();
       });
     });
+  },
+
+  deleteSong: function(target, callback) {
+    User.findOne({}, function(err, result) {
+
+
+      var deleteLocation;
+      result.queue.forEach(function(song, index) {
+        if (song.id === target) {
+          deleteLocation = index;
+        }
+      });
+      result.queue.splice(deleteLocation, 1);
+      result.save(function(err) {
+        console.error(err);
+        callback();
+      });
+    });
   }
 
 };

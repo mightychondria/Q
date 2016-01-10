@@ -4432,6 +4432,11 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
             playlist = queue;
             $rootScope.$broadcast('player:playlist', playlist);
         });
+
+        // socket.on('deleteSong', function(queue) {
+        //     playlist = queue;
+        //     $rootScope.$broadcast('player:playlist', playlist);
+        // });
         
         return {
             /**
@@ -4637,6 +4642,8 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                 //remove from playlist
                 playlist.splice(index, 1);
                 //once all done then broadcast
+
+                socket.emit('deleteSong', song);
                 
             },
             initPlayTrack: function(trackId, isResume) {

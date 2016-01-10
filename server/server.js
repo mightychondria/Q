@@ -45,6 +45,15 @@ io.on('connection', function (socket) {
     });
   });
 
+  socket.on('deleteSong', function (target) {
+    User.deleteSong(target, function() {
+      User.getQueue(function(queue) {
+        socket.emit('getQueue', queue);
+        socket.broadcast.emit('getQueue', queue);
+      })
+    })
+  });
+
   socket.on('progress', function (data) {
     console.log(data);
   });
