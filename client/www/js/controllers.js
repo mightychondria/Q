@@ -7,17 +7,26 @@ angular.module('Q.controllers', [
 
 .controller('playlistController', function($scope, $rootScope, $location, Playlist) {
  $rootScope.songs= [];
- $rootScope.customPlaylist = [{id: 1, title:'title', artist:'artist', url:'url'}]
+ $rootScope.customPlaylist
 
-  $scope.addSong = function(song) {
-    console.log('adding song');
-    socket.emit('addSong', song);
-  }
+  // $scope.addSong = function(song) {
+  //   console.log('adding song');
+  //   socket.emit('addSong', song);
+  // };
 
-  socket.on('queueUpdated', function(queue){
-    console.log('queue Updated', queue)
-    $rootScope.customPlaylist = queue;
-  })
+  // socket.on('queueUpdated', function(queue){
+  //   console.log('queue Updated', queue);
+  //   $rootScope.$apply(function() {
+  //     $rootScope.customPlaylist = queue;
+  //   });
+  // });
+
+  // socket.on('getQueue', function(queue){
+  //   console.log('queue Updated', queue);
+  //   $rootScope.$apply(function() {
+  //     $rootScope.customPlaylist = queue;
+  //   });
+  // });
 
 
 
