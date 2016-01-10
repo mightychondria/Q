@@ -5,6 +5,7 @@ var io = require('socket.io')(server);
 var bodyParser = require('body-parser');
 var SC = require('node-soundcloud');
 var db = require('./db/dbConfig')
+var User = require('./db/userController')
 
 require('./routes.js')(app, express);
 
@@ -19,8 +20,17 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
+  User.getQueue(function(queue) {
+    socket.emit('getQueue', queue);
+  });
+  // socket.emit('news', { hello: 'world' });
+  socket.on('addSong', function (newSong) {
+    User.addSong(newSong, function() {
+      User.getQueue(function(queue) {
+        console.log('emitting queueUpdated');
+        socket.emit('queueUpdated', queue);
+        socket.broadcast.emit('queueUpdated', queue);
+      });
+    });
   });
 });
