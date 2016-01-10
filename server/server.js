@@ -30,18 +30,41 @@ userModel.remove({}, function() {
   });
 });
 
+var currentState = {
+  currentlyPlaying: null,
+  progress: 0,
+  queue: []
+};
+
 io.on('connection', function (socket) {
   User.getQueue(function(queue) {
-    socket.emit('getQueue', queue);
-    socket.broadcast.emit('getQueue', queue);
+    currentState.queue = queue;
+    socket.emit('getState', currentState);
+    socket.broadcast.emit('getState', currentState);
   });
 
   socket.on('addSong', function (newSong) {
     User.addSong(newSong, function() {
       User.getQueue(function(queue) {
-        socket.emit('getQueue', queue);
-        socket.broadcast.emit('getQueue', queue);
+        currentState.queue = queue;
+        socket.emit('getState', currentState);
+        socket.broadcast.emit('getState', currentState);
       });
     });
+  });
+
+  socket.on('progress', function (data) {
+    console.log(data);
+  });
+
+  socket.on('currentlyPlaying', function (data) {
+    console.log('currently playing', data);
+    socket.emit('currentlyPlaying', data);
+    socket.broadcast.emit('currentlyPlaying', data);
+  });
+
+  socket.on('currentTrackPosition', function (data) {
+    socket.emit('currentTrackPosition', data);
+    socket.broadcast.emit('currentTrackPosition', data);
   });
 });

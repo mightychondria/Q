@@ -4425,11 +4425,11 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
             isPlaying = false,
             volume = 90,
             trackProgress = 0,
-            playlist = [];
-        var socket = io('http://localhost:8000');
+            playlist = [],
+            socket = io('http://localhost:8000');
         
-        socket.on('getQueue', function(queue){
-            playlist = queue;
+        socket.on('getState', function(currentState){
+            playlist = currentState.queue;
             $rootScope.$broadcast('player:playlist', playlist);
         });
         
@@ -4438,6 +4438,11 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
              * Initialize soundmanager,
              * requires soundmanager2 to be loaded first
              */
+
+            socket: function() {
+                return socket;
+            },
+
             init: function() {
                 if(typeof soundManager === 'undefined') {
                     alert('Please include SoundManager2 Library!');
@@ -4599,7 +4604,6 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                 }
             },
             addTrack: function(track) {
-                console.log(track);
                 //check if track itself is valid and if its url is playable
                 if (!this.isTrackValid) {
                     return null;
@@ -4815,23 +4819,47 @@ ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
     function($filter, angularPlayer) {
         return {
             restrict: "E",
+
+            init: function(scope) {
+
+            },
+
             link: function(scope, element, attrs) {
                 //init and load sound manager 2
                 angularPlayer.init();
-                scope.$on('track:progress', function(event, data) {
+
+                // angularPlayer.socket().on('getState', function(currentState) {
+                //     scope.$apply(function() {
+                //         console.log(currentState);
+                //     });
+                // });
+                var socket = angularPlayer.socket();
+                
+                socket.on('currentlyPlaying', function(currentTrack) {
                     scope.$apply(function() {
-                        scope.progress = data;
+                        scope.currentPlaying = currentTrack;
                     });
+                });
+
+                socket.on('currentTrackPosition', function(currentTrackPosition) {
+                    scope.$apply(function() {
+                        if ($filter('humanTime')(currentTrackPosition).indexOf('NaN') === -1) {
+                            scope.currentPostion = $filter('humanTime')(currentTrackPosition);
+                        };
+                    });
+                });
+
+                scope.$on('track:progress', function(event, data) {
+                    socket.emit('currentlyPlaying', angularPlayer.currentTrackData());
                 });
                 scope.$on('track:id', function(event, data) {
-                    scope.$apply(function() {
-                        scope.currentPlaying = angularPlayer.currentTrackData();
-                    });
+                    // angularPlayer.socket().emit('currentlyPlaying', angularPlayer.currentTrackData());
                 });
                 scope.$on('currentTrack:position', function(event, data) {
-                    scope.$apply(function() {
-                        scope.currentPostion = $filter('humanTime')(data);
-                    });
+                    socket.emit('currentTrackPosition', data);
+                    // scope.$apply(function() {
+                    //     scope.currentPostion = $filter('humanTime')(data);
+                    // });
                 });
                 scope.$on('currentTrack:duration', function(event, data) {
                     scope.$apply(function() {
