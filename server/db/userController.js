@@ -12,7 +12,7 @@ module.exports = {
       else {
         console.log('saved new user');
       }
-      res.end();
+      // res.end();
     });
   },
 

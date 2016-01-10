@@ -4,16 +4,32 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var bodyParser = require('body-parser');
 var SC = require('node-soundcloud');
-var db = require('./db/dbConfig')
-var User = require('./db/userController')
+var db = require('./db/dbConfig');
+var User = require('./db/userController');
+var userModel = require('./db/userModel');
 
 require('./routes.js')(app, express);
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../client'));
+app.use(express.static(__dirname + '/../client/www'));
 
-server.listen(8000);
+var port = process.env.PORT || 8000;
+server.listen(port);
+
+// This empties the database and seeds the database with one user with an empty queue (no multi-user functionality yet)
+userModel.remove({}, function() {
+  new userModel({
+    //to check with Harun and Spener
+    queue: []
+  }).save(function(err) {
+    if (err) console.log("error saving new user", err);
+    else {
+      console.log('saved new user');
+    }
+  });
+});
+
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/test.html');
