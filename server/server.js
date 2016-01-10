@@ -30,14 +30,10 @@ userModel.remove({}, function() {
   });
 });
 
-
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/test.html');
-});
-
 io.on('connection', function (socket) {
   User.getQueue(function(queue) {
     socket.emit('getQueue', queue);
+    socket.broadcast.emit('getQueue', queue);
   });
 
   socket.on('addSong', function (newSong) {
