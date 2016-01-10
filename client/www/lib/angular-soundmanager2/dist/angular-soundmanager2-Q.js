@@ -4428,8 +4428,8 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
             playlist = [],
             socket = io('http://localhost:8000');
         
-        socket.on('getState', function(currentState){
-            playlist = currentState.queue;
+        socket.on('getQueue', function(queue){
+            playlist = queue;
             $rootScope.$broadcast('player:playlist', playlist);
         });
         

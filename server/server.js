@@ -30,25 +30,17 @@ userModel.remove({}, function() {
   });
 });
 
-var currentState = {
-  currentlyPlaying: null,
-  progress: 0,
-  queue: []
-};
-
 io.on('connection', function (socket) {
   User.getQueue(function(queue) {
-    currentState.queue = queue;
-    socket.emit('getState', currentState);
-    socket.broadcast.emit('getState', currentState);
+    socket.emit('getQueue', queue);
+    socket.broadcast.emit('getQueue', queue);
   });
 
   socket.on('addSong', function (newSong) {
     User.addSong(newSong, function() {
       User.getQueue(function(queue) {
-        currentState.queue = queue;
-        socket.emit('getState', currentState);
-        socket.broadcast.emit('getState', currentState);
+        socket.emit('getQueue', queue);
+        socket.broadcast.emit('getQueue', queue);
       });
     });
   });
