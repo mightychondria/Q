@@ -23,7 +23,7 @@ userModel.remove({}, function() {
     //to check with Harun and Spener
     queue: []
   }).save(function(err) {
-    if (err) console.log("error saving new user", err);
+    if (err) console.error("error seeding database", err);
     else {
       console.log('saved new user');
     }
