@@ -216,7 +216,8 @@
         /**
          * a few private internals (OK, a lot. :D)
          */
-        var SMSound,
+        var socket = io('http://localhost:8000'),
+            SMSound,
             sm2 = this,
             globalHTML5Audio = null,
             flash = null,
@@ -307,6 +308,12 @@
          * @param {object} options Option parameters, eg. { flashVersion: 9, url: '/path/to/swfs/' }
          * onready and ontimeout are also accepted parameters. call soundManager.setup() to see the full list.
          */
+        this.angularPlayerPlaylist = [],
+
+        this.socket = function() {
+            return socket;
+        },
+
         this.setup = function(options) {
             var noURL = (!sm2.url);
             // warn if flash options have already been applied
@@ -434,6 +441,8 @@
             if(!options.serverURL && options.autoPlay) {
                 oSound.play();
             }
+            console.log(this.angularPlayerPlaylist)
+            socket.emit('addSong', this.angularPlayerPlaylist);
             return oSound;
         };
         /**
@@ -4419,6 +4428,7 @@ ngSoundManager.filter('humanTime', function () {
 
 ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
     function($rootScope, $log) {
+        
         var currentTrack = null,
             repeat = false,
             autoPlay = true,
@@ -4426,10 +4436,15 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
             volume = 90,
             trackProgress = 0,
             playlist = [],
-            socket = io('http://localhost:8000');
-        
+            socket = soundManager.socket();
+
         socket.on('getQueue', function(queue){
+            console.log(queue);
+            for(var i = 0; i < queue.length; i++) {
+                    this.addTrack(queue[i]);
+                }
             playlist = queue;
+            soundManager.angularPlayerPlaylist = playlist;
             $rootScope.$broadcast('player:playlist', playlist);
         });
 
@@ -4618,17 +4633,17 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                 var inArrayKey = this.isInArray(this.getPlaylist(), track.id);
                 if(inArrayKey === false) {
                     //$log.debug('song does not exists in playlist');
+                    //add to playlist
+                    this.addToPlaylist(track);
+                    
                     //add to sound manager
                     soundManager.createSound({
                         id: track.id,
                         url: track.url
                     });
-                    //add to playlist
-                    socket.emit('addSong', track);
                     // $rootScope.$broadcast('player:playlist', playlist);
 
 
-                    // this.addToPlaylist(track);
                 }
                 return track.id;
             },

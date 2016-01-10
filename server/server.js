@@ -36,8 +36,8 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('getQueue', queue);
   });
 
-  socket.on('addSong', function (newSong) {
-    User.addSong(newSong, function() {
+  socket.on('addSong', function (newQueue) {
+    User.saveQueue(newQueue, function() {
       User.getQueue(function(queue) {
         socket.emit('getQueue', queue);
         socket.broadcast.emit('getQueue', queue);

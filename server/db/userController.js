@@ -22,6 +22,21 @@ module.exports = {
     });
   },
 
+  saveQueue: function(updatedQueue, callback) {
+    updatedQueue = updatedQueue.map(function(song) {
+      delete song['$$hashKey'];
+      return song;
+    });
+    User.findOne({}, function(err, result) {
+      console.log(updatedQueue)
+      result.queue = updatedQueue;
+      result.save(function(err) {
+        console.error(err);
+        callback();
+      });
+    });
+  },
+
   addSong: function(data, callback) {
     delete data['$$hashKey'];
     User.findOne({}, function(err, result) {
