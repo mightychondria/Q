@@ -4849,6 +4849,14 @@ ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
                     });
                 });
 
+                socket.on('currentTrackDuration', function(currentTrackDuration) {
+                    scope.$apply(function() {
+                        if ($filter('humanTime')(currentTrackDuration).indexOf('NaN') === -1) {
+                            scope.currentDuration = $filter('humanTime')(currentTrackDuration);
+                        };
+                    });
+                });
+
                 scope.$on('track:progress', function(event, data) {
                     socket.emit('currentlyPlaying', angularPlayer.currentTrackData());
                 });
@@ -4862,9 +4870,10 @@ ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
                     // });
                 });
                 scope.$on('currentTrack:duration', function(event, data) {
-                    scope.$apply(function() {
-                        scope.currentDuration = $filter('humanTime')(data);
-                    });
+                    socket.emit('currentTrackDuration', data);
+                    // scope.$apply(function() {
+                    //     scope.currentDuration = $filter('humanTime')(data);
+                    // });
                 });
                 scope.isPlaying = false;
                 scope.$on('music:isPlaying', function(event, data) {

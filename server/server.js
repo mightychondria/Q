@@ -67,4 +67,9 @@ io.on('connection', function (socket) {
     socket.emit('currentTrackPosition', data);
     socket.broadcast.emit('currentTrackPosition', data);
   });
+
+  socket.on('currentTrackDuration', function (data) {
+    socket.emit('currentTrackDuration', data);
+    socket.broadcast.emit('currentTrackDuration', data);
+  });
 });
