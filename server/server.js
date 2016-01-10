@@ -72,4 +72,9 @@ io.on('connection', function (socket) {
     socket.emit('currentTrackDuration', data);
     socket.broadcast.emit('currentTrackDuration', data);
   });
+
+  socket.on('isPlaying', function (data) {
+    socket.emit('isPlaying', data);
+    socket.broadcast.emit('isPlaying', data);
+  });
 });

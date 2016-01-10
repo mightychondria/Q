@@ -4875,11 +4875,19 @@ ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
                     //     scope.currentDuration = $filter('humanTime')(data);
                     // });
                 });
-                scope.isPlaying = false;
-                scope.$on('music:isPlaying', function(event, data) {
+
+                socket.on('currentTrackDuration', function(data) {
                     scope.$apply(function() {
                         scope.isPlaying = data;
                     });
+                });
+
+                scope.isPlaying = false;
+                scope.$on('music:isPlaying', function(event, data) {
+                    socket.emit('isPlaying', data);
+                    // scope.$apply(function() {
+                    //     scope.isPlaying = data;
+                    // });
                 });
                 scope.playlist = angularPlayer.getPlaylist(); //on load
                 scope.$on('player:playlist', function(event, data) {

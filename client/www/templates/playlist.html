@@ -72,7 +72,7 @@
   </form>
 
         <div ng-repeat = 'song in songs'>
-            <span music-player="play" add-song="song">{{ song.title }}</span>
+            <span add-song="song">{{ song.title }}</span>
             <button music-player add-song='song'>+</button>
     </div>
 
