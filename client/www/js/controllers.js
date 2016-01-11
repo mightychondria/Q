@@ -79,6 +79,9 @@ $scope.searchSong = function (){
 
 .controller('landingPageController', function($scope, $location, Playlist){
   $scope.makeHost = function(){
+
+    // Note: this is a temporary fix for the demo, and should not be used as actual authentication
+
     if($scope.createRoomPassword === "test"){
       Playlist.makeHost();
     }
