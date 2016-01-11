@@ -33,6 +33,7 @@ angular.module('Q.services', [
     }).then(function(tracks) {
       return tracks;
     });
+  }
     // SC.get("/groups/55517/tracks", {
     //         limit: 5
     //     }, function(tracks) {
@@ -52,11 +53,27 @@ angular.module('Q.services', [
     //         }
     //     });
     // return tracks;
+    var isHostData = false;
+
+var isHost = function(){
+  return isHostData;
 }
+
+var makeHost = function () {
+  isHostData = true;
+}
+
+var makeGuest = function(){
+  isHostData = false;
+}
+
   return {
     getSongs: getSongs,
     addSong: addSong,
-    searchSongs: searchSongs
+    searchSongs: searchSongs,
+    makeHost: makeHost,
+    makeGuest: makeGuest,
+    isHost: isHost
   }
 
 })

@@ -1,4 +1,4 @@
-<div id="playlist" class="centerDiv">
+<!-- <div id="playlist" class="centerDiv">
      <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -13,9 +13,9 @@
         <hr />
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12"> -->
                 <!-- init soundManager2 player -->
-                <sound-manager></sound-manager>
+ <!--                <sound-manager></sound-manager>
                 <button play-all="songs">Play all</button>
 
                 <p>
@@ -76,5 +76,86 @@
             <span add-song="song">{{ song.title }}</span>
             <button music-player add-song='song'>+</button>
     </div>
+
+</div> -->
+
+
+<div class="list list-inset bar bar-subheader">
+  <form ng-submit='searchSong()'>
+    <label class ='item item-input'>
+      <i class='icon ion-search placeholder-icon'></i>
+      <input type='text' placeholder='SoundCloud search...' ng-model="query" ng-change='searchSong()'>
+    </label>
+  </form>
+</div>
+<br>
+<div class='list list-inset searchResults'>
+       <!--  <ul class="list bar-subheader"> -->
+  <div music-player="" add-song="song" ng-click='clearResults()' class="row searchResultsItem" ng-repeat='song in songs'>
+    <span class="center thumb">  <img class='rounded right small'  src={{song.image}} ></span>
+
+    <span class="center textcenter large">  {{song.title}} by {{song.artist}}</span>
+
+
+  </div>
+    <!--    </ul> -->
+</div>
+<br>
+
+<sound-manager></sound-manager>
+
+
+
+               <!--  <div class="seekBase" seek-track>
+                    <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
+                </div> -->
+
+
+
+ <ion-scroll style="overflow:hidden; height:100%; margin-right:auto; margin-left:auto; width:80%" has-bouncing='true'>
+    <ul>
+
+      <div class='row' ng-repeat="song in playlist">
+
+        <div class="col-90">
+          <div play-from-playlist="song" ng-class="currentPlaying.id === song.id ? 'button button-positive button-block playlistItem' : 'button button-outline button-stable button-block playlistItem'">
+          {{ song.title }} by {{song.artist}}
+          </div>
+        </div>
+        <div ng-show="isHost()">
+          <a remove-from-playlist="song" data-index="{{$index}}" ng-class="currentPlaying.id === song.id ? 'button button-clear button-positive button-block' : 'button button-clear button-stable button-block'">
+            <i class="ion-close-round"></i>
+          </a>
+        </div>
+      </div>
+    </ul>
+</ion-scroll>
+
+<div class="bar bar-footer row row-center bar-stable">
+  <div class="col-30" style="margin-left: auto; margin-right: auto; float:left; min-width:240px" ng-show="isHost()">
+    <button play-music class="ion-play button button-outline button-positive circle bottomButton"></button>
+    <button pause-music class="ion-pause button button-outline button-positive bottomButton"></button>
+    <button stop-music class="ion-stop button button-outline button-positive bottomButton"></button>
+      <button prev-track class="ion-skip-backward button button-outline button-positive bottomButton"></button>
+    <button next-track class="ion-skip-forward button button-outline button-positive bottomButton"></button>
+
+    <button music-volume data-type="decrease" class="ion-android-volume-down button button-outline button-positive bottomButton"></button>
+    <button music-volume data-type="increase" class="ion-android-volume-up button button-outline button-positive bottomButton"></button>
+
+             <!--    <button clear-playlist class="ion-close-round button button-outline button-positive"></button>    </div> -->
+  </div>
+
+
+    <div class='nowplaying center '>
+      <!--  <span style="margin-right:10px; vertical-align: middle">
+
+          </span> -->
+          <span ng-show='currentPlaying.title' class='center small'>
+          <p class='animated fadeInUp'><img height="20" width="20" style="float: left; margin-right:5px" class="rounded" src={{currentPlaying.image}}> {{ currentPlaying.title }} by {{ currentPlaying.artist }}  {{ currentPostion }} / {{ currentDuration }}</p>
+
+          </span>
+
+    </div>
+
 
 </div>
