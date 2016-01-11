@@ -41,8 +41,14 @@ io.on('connection', function (socket) {
   // This line needed only for Heroku, comment it out if serving locally
   io.set("transports", ["polling"]); 
 
-  User.getQueue(function(queue) {
-    socket.emit('getQueue', queue);
+  // User.getQueue(function(queue) {
+  //   socket.emit('getQueue', queue);
+  // });
+
+  socket.on('newGuest', function() {
+    User.getQueue(function(queue) {
+      socket.emit('getQueue', queue);
+    });
   });
 
   socket.on('addSong', function (newSong) {

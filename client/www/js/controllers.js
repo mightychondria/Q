@@ -8,6 +8,7 @@ angular.module('Q.controllers', [
 .controller('playlistController', function($scope, $rootScope, $location, Playlist) {
  $rootScope.songs= [];
  $rootScope.customPlaylist;
+  window.socket.emit('newGuest');
 
   // $scope.addSong = function(song) {
   //   console.log('adding song');

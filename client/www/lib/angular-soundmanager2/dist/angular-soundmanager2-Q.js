@@ -216,7 +216,7 @@
         /**
          * a few private internals (OK, a lot. :D)
          */
-        var socket = io(),
+        var socket = window.socket,
             SMSound,
             sm2 = this,
             globalHTML5Audio = null,
