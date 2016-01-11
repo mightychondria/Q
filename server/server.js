@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../client/www'));
 
-var port = 8000;
+var port = process.env.PORT || 8000;
 server.listen(port);
 
 // This empties the database and seeds the database with one user with an empty queue (no multi-user functionality yet)
@@ -30,7 +30,14 @@ userModel.remove({}, function() {
   });
 });
 
+
+// io.configure(function () {  
+// });
+
+
 io.on('connection', function (socket) {
+  io.set("transports", ["polling"]); 
+
   User.getQueue(function(queue) {
     socket.emit('getQueue', queue);
     socket.broadcast.emit('getQueue', queue);
