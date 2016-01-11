@@ -91,7 +91,7 @@
             'whileplaying': null, // callback during play (position update)
             'onposition': null, // object containing times and function callbacks for positions of interest
             'onstop': null, // callback for "user stop"
-            'onfailure': null, // callback function for when playing fails
+            'onfailure': 'nextTrack', // callback function for when playing fails
             'onfinish': null, // callback function for "sound finished playing"
             'multiShot': true, // let sounds "restart" or layer on top of each other when played multiple times, rather than one-shot/one at a time
             'multiShotEvents': false, // fire multiple sound events (currently onfinish() only) when multiShot is enabled
@@ -4624,17 +4624,22 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                 if(inArrayKey === false) {
                     //$log.debug('song does not exists in playlist');
                     //add to playlist
-                    this.addToPlaylist(track);
-                    
-                    //add to sound manager
-                    soundManager.createSound({
-                        id: track.id,
-                        url: track.url
-                    });
 
-                    console.log(track)
-                    socket.emit('addSong', track);
-                    $rootScope.$broadcast('player:playlist', playlist);
+                    //check to make sure track url isn't dead before adding it
+                    $.get(track.url, function() {
+                        this.addToPlaylist(track);
+                        
+                        //add to sound manager
+                        soundManager.createSound({
+                            id: track.id,
+                            url: track.url
+                        });
+                        socket.emit('addSong', track);
+                        $rootScope.$broadcast('player:playlist', playlist);
+                    }.bind(this)).error(function() {
+                        $('<div>Track url is dead!</div>').insertBefore('.nowplaying').delay(3000).fadeOut();
+                        console.log('track not found');
+                    });
 
 
                 }
@@ -4852,7 +4857,7 @@ ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
                 socket.on('getQueue', function (queue) {
                     console.log('queue from server', queue)
                     queue.forEach(function(song) {
-                        angularPlayer.addTrack(song);
+                        angularPlayer.addToPlaylist(song);
                     });
                 }); 
 
