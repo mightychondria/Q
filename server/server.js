@@ -36,6 +36,9 @@ userModel.remove({}, function() {
 
 
 io.on('connection', function (socket) {
+  console.log(socket);
+
+  // This line needed only for Heroku, comment it out if serving locally
   io.set("transports", ["polling"]); 
 
   User.getQueue(function(queue) {
@@ -63,7 +66,6 @@ io.on('connection', function (socket) {
   });
 
   socket.on('currentlyPlaying', function (data) {
-    console.log('currently playing', data);
     socket.emit('currentlyPlaying', data);
     socket.broadcast.emit('currentlyPlaying', data);
   });
