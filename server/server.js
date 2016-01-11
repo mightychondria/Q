@@ -46,12 +46,10 @@ io.on('connection', function (socket) {
   });
 
   socket.on('deleteSong', function (target) {
-    User.deleteSong(target, function() {
-      User.getQueue(function(queue) {
-        socket.emit('deleteSong', queue);
-        socket.broadcast.emit('deleteSong', queue);
-      })
-    })
+    User.deleteSong(target.song, function() {
+      socket.emit('deleteSong', target);
+      socket.broadcast.emit('deleteSong', target);
+    });
   });
 
   socket.on('progress', function (data) {
