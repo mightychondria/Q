@@ -40,11 +40,21 @@ module.exports = {
   addSong: function(data, callback) {
     delete data['$$hashKey'];
     User.findOne({}, function(err, result) {
-      result.queue.push(data);
-      result.save(function(err) {
-        console.error(err);
-        callback();
+      var alreadyAdded = false;
+      result.queue.forEach(function(song) {
+        if (data.id === song.id) {
+          alreadyAdded = true;
+        }
       });
+      if (!alreadyAdded) {
+        result.queue.push(data);
+        result.save(function(err) {
+          console.error(err);
+          callback();
+        });
+      } else {
+        return;
+      }
     });
   },
 
