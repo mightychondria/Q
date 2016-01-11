@@ -216,7 +216,7 @@
         /**
          * a few private internals (OK, a lot. :D)
          */
-        var socket = io('http://localhost:8000'),
+        var socket = io(),
             SMSound,
             sm2 = this,
             globalHTML5Audio = null,
