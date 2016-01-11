@@ -33,7 +33,11 @@ angular.module('Q', [
             url: '/playlist',
             templateUrl:'../templates/playlist.html',
             controller:'playlistController'
+        }).state('landing', {
+            url: '/landing',
+            templateUrl: '../templates/landingPage.html',
+            controller: 'landingPageController'
         });
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/landing');
 
 });

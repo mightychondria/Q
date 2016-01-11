@@ -30,7 +30,14 @@ userModel.remove({}, function() {
   });
 });
 
+
+// io.configure(function () {  
+// });
+
+
 io.on('connection', function (socket) {
+  io.set("transports", ["polling"]); 
+
   User.getQueue(function(queue) {
     socket.emit('getQueue', queue);
     socket.broadcast.emit('getQueue', queue);
