@@ -30,17 +30,21 @@ userModel.remove({}, function() {
   });
 });
 
-io.set('transports', ['xhr-polling']);
-io.set('polling duration', 10);
+
+// io.configure(function () {  
+// });
+
 
 io.on('connection', function (socket) {
+  io.set("transports", ["xhr-polling"]); 
+
   User.getQueue(function(queue) {
     socket.emit('getQueue', queue);
     socket.broadcast.emit('getQueue', queue);
   });
 
-  socket.on('addSong', function (newQueue) {
-    User.saveQueue(newQueue, function() {
+  socket.on('addSong', function (newSong) {
+    User.addSong(newSong, function() {
       User.getQueue(function(queue) {
         socket.emit('getQueue', queue);
         socket.broadcast.emit('getQueue', queue);
