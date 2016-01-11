@@ -38,10 +38,10 @@ io.on('connection', function (socket) {
 
   socket.on('addSong', function (newSong) {
     User.addSong(newSong, function() {
-      User.getQueue(function(queue) {
-        socket.emit('getQueue', queue);
-        socket.broadcast.emit('getQueue', queue);
-      });
+      socket.emit('newSong', newSong);
+      socket.broadcast.emit('newSong', newSong);
+      // User.getQueue(function(queue) {
+      // });
     });
   });
 
