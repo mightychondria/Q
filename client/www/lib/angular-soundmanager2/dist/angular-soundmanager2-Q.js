@@ -4426,7 +4426,7 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
             volume = 90,
             trackProgress = 0,
             playlist = [],
-            socket = io(location.origin.replace(/^http/, 'ws'));
+            socket = io('ws://floating-earth-3947.herokuapp.com:80');
         
         socket.on('getQueue', function(queue){
             playlist = queue;
