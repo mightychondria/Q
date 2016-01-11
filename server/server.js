@@ -30,6 +30,11 @@ userModel.remove({}, function() {
   });
 });
 
+io.configure(function () {  
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 io.on('connection', function (socket) {
   User.getQueue(function(queue) {
     socket.emit('getQueue', queue);
