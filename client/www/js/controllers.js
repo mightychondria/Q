@@ -76,12 +76,18 @@ $scope.searchSong = function (){
   }
   console.log(Playlist.isHost());
 })
+
 .controller('landingPageController', function($scope, $location, Playlist){
   $scope.makeHost = function(){
-    Playlist.makeHost();
+    if($scope.createRoomPassword = "test"){
+      Playlist.makeHost();
+    }
   }
 
   $scope.makeGuest = function(){
     Playlist.makeGuest();
   }
+
+  $scope.attemptHost = false;
+  $scope.createRoomPassword;
 })
