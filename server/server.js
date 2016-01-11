@@ -36,7 +36,7 @@ userModel.remove({}, function() {
 
 
 io.on('connection', function (socket) {
-  io.set("transports", ["xhr-polling"]); 
+  io.set("transports", ["polling"]); 
 
   User.getQueue(function(queue) {
     socket.emit('getQueue', queue);
