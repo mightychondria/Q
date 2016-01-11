@@ -10,7 +10,7 @@
     "client/www/lib"
   ],
   "dependencies": {
-    "ionic": "driftyco/ionic-bower#v1.0.1"
+    "ionic": "driftyco/ionic-bower#v1.1.1"
   },
   "resolutions": {
     "angular": "1.4.3",
