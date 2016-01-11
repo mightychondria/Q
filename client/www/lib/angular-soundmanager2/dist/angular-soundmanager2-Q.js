@@ -4860,8 +4860,9 @@ ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
                 socket.on('deleteSong', function (targetObj) {
                     console.log(targetObj);
                     soundManager.destroySound(targetObj.song);
-                    scope.playlist.splice(targetObj.index, 1);
-                    $rootScope.$broadcast('player:playlist', scope.playlist);
+                    scope.$apply(function () {
+                        scope.playlist.splice(targetObj.index, 1);
+                    });
                 }); 
 
                 socket.on('newSong', function (newSong) {
