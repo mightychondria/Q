@@ -2,7 +2,16 @@
 <br>
 <br>
 
+<div class='card'>
+<br>
+<br>
+<center><h1 style="color:#3884f5;" class='title'>Welcome to Q.</h1>
 
+<h4 style="color:#3884f5;" >Create a room or enter an existing <br>
+ one to enjoy music playlist with your friends.</h4></center>
+ <br>
+ <br>
+</div>
 <div class="list list-inset">
 <a ng-click="makeHost()" href="/#/playlist" class="button button-block button-positive">Create Room</button>
 </a>
@@ -10,13 +19,13 @@
 
 
 <div class="list list-inset">
-  <label class="item item-input">
-    <input type="text" placeholder="Playlist Name">
-  </label>
+<a ng-click="makeGuest()" class="button button-block button-positive" href="/#/playlist">Enter Room</a>
 </div>
 
 <div class="list list-inset">
-<a ng-click="makeGuest()" class="button button-block button-positive" href="/#/playlist">Enter Room</a>
+  <label class="item item-input">
+    <input type="text" placeholder="Room Name">
+  </label>
 </div>
 
 </div>

@@ -112,7 +112,7 @@
 
 
 
- <ion-scroll style="overflow:hidden; height:100%; margin-right:auto; margin-left:auto; width:80%" has-bouncing='true'>
+ <ion-scroll style="overflow:hidden; height:100%; margin-right:auto; margin-left:auto; width:80%" has-bouncing='true' ng-show="isHost()">
     <ul>
 
       <div class='row' ng-repeat="song in playlist">
@@ -130,6 +130,19 @@
       </div>
     </ul>
 </ion-scroll>
+
+<ion-scroll style="overflow:hidden; height:100%; margin-right:auto; margin-left:auto; width:80%" has-bouncing='true' ng-show="!isHost()">
+    <ul>
+      <div class='row' ng-repeat="song in playlist">
+        <div class="col-90">
+          <div ng-class="currentPlaying.id === song.id ? 'button button-positive button-block playlistItem' : 'button button-outline button-stable button-block playlistItem'">
+          {{ song.title }} by {{song.artist}}
+          </div>
+        </div>
+      </div>
+    </ul>
+</ion-scroll>
+
 
 <div class="bar bar-footer row row-center bar-stable">
   <div class="col-30" style="margin-left: auto; margin-right: auto; float:left; min-width:240px" ng-show="isHost()">
