@@ -51,9 +51,10 @@ module.exports = {
   deleteSong: function(target, callback) {
     User.findOne({}, function(err, result) {
 
-
+      console.log(target);
       var deleteLocation;
       result.queue.forEach(function(song, index) {
+        console.log('deleting', song)
         if (song.id === target) {
           deleteLocation = index;
         }

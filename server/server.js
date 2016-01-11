@@ -45,20 +45,18 @@ io.on('connection', function (socket) {
 
   socket.on('addSong', function (newSong) {
     User.addSong(newSong, function() {
-      User.getQueue(function(queue) {
-        socket.emit('getQueue', queue);
-        socket.broadcast.emit('getQueue', queue);
-      });
+      socket.emit('newSong', newSong);
+      socket.broadcast.emit('newSong', newSong);
+      // User.getQueue(function(queue) {
+      // });
     });
   });
 
   socket.on('deleteSong', function (target) {
-    User.deleteSong(target, function() {
-      User.getQueue(function(queue) {
-        socket.emit('getQueue', queue);
-        socket.broadcast.emit('getQueue', queue);
-      })
-    })
+    User.deleteSong(target.song, function() {
+      socket.emit('deleteSong', target);
+      socket.broadcast.emit('deleteSong', target);
+    });
   });
 
   socket.on('progress', function (data) {
