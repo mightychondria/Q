@@ -4426,7 +4426,7 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
             volume = 90,
             trackProgress = 0,
             playlist = [],
-            socket = io();
+            socket = io(location.origin.replace(/^http/, 'ws'));
         
         socket.on('getQueue', function(queue){
             playlist = queue;
