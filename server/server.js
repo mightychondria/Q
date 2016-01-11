@@ -40,7 +40,6 @@ io.on('connection', function (socket) {
 
   User.getQueue(function(queue) {
     socket.emit('getQueue', queue);
-    socket.broadcast.emit('getQueue', queue);
   });
 
   socket.on('addSong', function (newSong) {

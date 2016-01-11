@@ -4635,11 +4635,11 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                             url: track.url
                         });
                         socket.emit('addSong', track);
+                        $rootScope.$broadcast('player:playlist', playlist);
                     }.bind(this)).error(function() {
                         $('<div>Track url is dead!</div>').insertBefore('.nowplaying').delay(3000).fadeOut();
                         console.log('track not found');
                     });
-                    $rootScope.$broadcast('player:playlist', playlist);
 
 
                 }
@@ -4857,7 +4857,7 @@ ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
                 socket.on('getQueue', function (queue) {
                     console.log('queue from server', queue)
                     queue.forEach(function(song) {
-                        angularPlayer.addTrack(song);
+                        angularPlayer.addToPlaylist(song);
                     });
                 }); 
 
