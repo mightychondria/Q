@@ -79,7 +79,7 @@ $scope.searchSong = function (){
 
 .controller('landingPageController', function($scope, $location, Playlist){
   $scope.makeHost = function(){
-    if($scope.createRoomPassword = "test"){
+    if($scope.createRoomPassword === "test"){
       Playlist.makeHost();
     }
   }
