@@ -1,3 +1,12 @@
+/**
+ * SoundManager2-Q
+ * This file has been modified to work with our implementation of sockets.
+ * Ctrl+F "socket" to see where the work was done.
+ * Please note that there is a difference between adding songs to SoundManager and adding songs to the "Playlist." The "Playlist" is
+ * the list of songs that are visible in the view. However, you can't merely push songs to the Playlist and expect them to work with
+ * SoundManager. In order for songs to actually work with SoundManager they have to be added to SoundManager using addTrack()
+
+
 /** @license
  *
  * SoundManager 2: JavaScript Sound for the Web

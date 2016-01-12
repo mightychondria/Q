@@ -39,7 +39,7 @@ io.on('connection', function (socket) {
   console.log(socket);
 
   // This line needed only for Heroku, comment it out if serving locally
-  io.set("transports", ["polling"]); 
+  // io.set("transports", ["polling"]); 
 
   // User.getQueue(function(queue) {
   //   socket.emit('getQueue', queue);
