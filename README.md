@@ -48,6 +48,7 @@
     "angular-ui-router": "0.2.13"
 
 ## Development
+(file structure: view in sublime or raw to see formatted structure)
 Q
 ├── bower.json (bower components: installed in client/www/lib)
 ├── client
