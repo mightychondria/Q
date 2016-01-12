@@ -8,27 +8,7 @@ angular.module('Q.controllers', [
 .controller('playlistController', function($scope, $rootScope, $location, Playlist) {
  $rootScope.songs= [];
  $rootScope.customPlaylist;
-
-  // $scope.addSong = function(song) {
-  //   console.log('adding song');
-  //   socket.emit('addSong', song);
-  // };
-
-  // socket.on('queueUpdated', function(queue){
-  //   console.log('queue Updated', queue);
-  //   $rootScope.$apply(function() {
-  //     $rootScope.customPlaylist = queue;
-  //   });
-  // });
-
-  // socket.on('getQueue', function(queue){
-  //   console.log('queue Updated', queue);
-  //   $rootScope.$apply(function() {
-  //     $rootScope.customPlaylist = queue;
-  //   });
-  // });
-
-
+  window.socket.emit('newGuest');
 
 $scope.searchSong = function (){
     $rootScope.songs= [];
@@ -76,12 +56,22 @@ $scope.searchSong = function (){
   }
   console.log(Playlist.isHost());
 })
-.controller('landingPageController', function($scope, $location, Playlist){
+
+.controller('landingPageController', function($scope, $location, $state, Playlist){
   $scope.makeHost = function(){
-    Playlist.makeHost();
+
+    // Note: this is a temporary fix for the demo, and should not be used as actual authentication
+    if($scope.createRoomPassword === "test"){
+      Playlist.makeHost();
+      $state.go('playlist');
+    }
   }
 
   $scope.makeGuest = function(){
     Playlist.makeGuest();
+    $state.go('playlist');
   }
+
+  $scope.attemptHost = false;
+  $scope.createRoomPassword;
 })

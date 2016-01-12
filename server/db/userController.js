@@ -22,10 +22,14 @@ module.exports = {
     });
   },
 
-  addSong: function(data, callback) {
-    delete data['$$hashKey'];
+  saveQueue: function(updatedQueue, callback) {
+    updatedQueue = updatedQueue.map(function(song) {
+      delete song['$$hashKey'];
+      return song;
+    });
     User.findOne({}, function(err, result) {
-      result.queue.push(data);
+      console.log(updatedQueue)
+      result.queue = updatedQueue;
       result.save(function(err) {
         console.error(err);
         callback();
@@ -33,20 +37,44 @@ module.exports = {
     });
   },
 
+  addSong: function(data, callback) {
+    delete data['$$hashKey'];
+    User.findOne({}, function(err, result) {
+      var alreadyAdded = false;
+      result.queue.forEach(function(song) {
+        if (data.id === song.id) {
+          alreadyAdded = true;
+        }
+      });
+      if (!alreadyAdded) {
+        result.queue.push(data);
+        result.save(function(err) {
+          console.error(err);
+          callback();
+        });
+      } else {
+        return;
+      }
+    });
+  },
+
   deleteSong: function(target, callback) {
     User.findOne({}, function(err, result) {
 
-
-      var deleteLocation;
+      console.log(target);
+      var deleteLocations = [];
       result.queue.forEach(function(song, index) {
+        console.log('deleting', song)
         if (song.id === target) {
-          deleteLocation = index;
+          deleteLocations.push(index);
         }
       });
-      result.queue.splice(deleteLocation, 1);
-      result.save(function(err) {
-        console.error(err);
-        callback();
+      deleteLocations.forEach(function(deleteLocation) {
+        result.queue.splice(deleteLocation, 1);
+        result.save(function(err) {
+          console.error(err);
+          callback();
+        });
       });
     });
   }

@@ -1,31 +1,52 @@
 <div>
-<br>
-<br>
+	<br>
+	<br>
 
-<div class='card'>
-<br>
-<br>
-<center><h1 style="color:#3884f5;" class='title'>Welcome to Q.</h1>
+<!-- Welcome to Q -->
+	<div class='card'>
+		<br>
+		<br>
+		<center>
+			<h1 style="color:#3884f5;" class='title'>Welcome to Q.</h1>
+			<h4 style="color:#3884f5;" >Create a room or enter an existing 
+			<br>one to enjoy music playlist with your friends.
+			</h4>
+		</center>
+	 	<br>
+	 	<br>
+	</div>
 
-<h4 style="color:#3884f5;" >Create a room or enter an existing <br>
- one to enjoy music playlist with your friends.</h4></center>
- <br>
- <br>
-</div>
-<div class="list list-inset">
-<a ng-click="makeHost()" href="/#/playlist" class="button button-block button-positive">Create Room</button>
-</a>
-</div>
+<!-- Show Create Room Button without functionality -->
+	<div class="list list-inset" ng-show="!attemptHost">
+		<a ng-click="attemptHost = true" class="button button-block button-positive">Create Room</a>
+	</div>
 
+<!-- Show Create Room Button with functionality and Password to Enter if someone is attempting to be the host -->
+	<div ng-show="attemptHost">
+		<div class="list list-inset">
+			<a ng-click="makeHost()" class="button button-block button-positive">Create Room</a>
+		</div>
+		<div class="list list-inset">
+			<form ng-submit="makeHost()">
+		  	<label class="item item-input">
+		    	<input type="password" placeholder="Sorry for this demo creating rooms is password protected" ng-model="createRoomPassword">
+		  	</label>
+		  </form>
+		</div>
+	</div>
 
-<div class="list list-inset">
-<a ng-click="makeGuest()" class="button button-block button-positive" href="/#/playlist">Enter Room</a>
-</div>
+<!-- Show Enter Room Button -->
+	<div class="list list-inset">
+		<a ng-click="makeGuest()" class="button button-block button-positive">Enter Room</a>
+	</div>
 
-<div class="list list-inset">
-  <label class="item item-input">
-    <input type="text" placeholder="Room Name">
-  </label>
-</div>
+<!-- Entering Rooms does not actually work now, need to create rooms in DB -->
+	<div class="list list-inset">
+		<form ng-submit="makeGuest()">
+		  <label class="item item-input">
+		    <input type="text" placeholder="Room Name">
+		  </label>
+	  </form>
+	</div>
 
 </div>

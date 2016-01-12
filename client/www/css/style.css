@@ -1,7 +1,7 @@
 /* Empty. Add your own CSS if you like */
 .bottomButton {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
 }
 .highlighted{
   color:red;
@@ -19,20 +19,36 @@ div.center{
 .nowplaying{
   border-radius:5px;
   white-space:nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
   font-size: 10px;
   position: relative;
-  height:30px;
-  width:80%;
+  height:35px;
+  width:90%;
   padding:5px;
   color:#387EF5;
   border: 1px solid #387EF5;
   overflow: hidden;
+  float: left;
+}
+
+.nowplayingHost{
+  border-radius:5px;
+  white-space:nowrap;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  position: relative;
+  height:35px;
+  width:90%;
+  padding:5px;
+  color:#886aea;
+  border: 1px solid #886aea;
+  overflow: hidden;
+  float: left;
 }
 
 .searchResults{
   position: absolute;
+  top: 5rem;
   z-index:10;
 }
 
@@ -40,6 +56,11 @@ div.center{
   position: relative;
   width: 1400px;
   color:#6D6D6D;
+}
+
+.searchBar{
+  position: relative;
+  margin-bottom: 50px;
 }
 
 span.center{
@@ -87,44 +108,34 @@ img.small {
     margin: 0;
     overflow:hidden;
     transform:translateX(100%);
+    transform:translateY(100%);
 }
 
 .marquee p:nth-child(1) {
-    animation: left-one 10s ease infinite;
+    -webkit-animation: up 2s forwards, across 35s 5000ms linear infinite;
 }
 
+@font-face {
+  font-family: Langdon;
+  src: url(../img/Langdon.otf);
+}
 
-@keyframes left-one {
+@keyframes up {
+    0%  {
+        transform:translateY(100%);
+
+    }
+    100% {
+        transform:translateY(0%);
+    }
+
+}
+@keyframes across {
     0%  {
         transform:translateX(100%);
+
     }
-    10% {
-        transform:translateX(0);
-    }
-    40% {
-        transform:translateX(-100%);
-    }
-    50% {
-        transform:translateX(100%);
-    }
-    100%{
-        transform:translateX(0%);
-    }
-}
-@keyframes left-two {
-    0% {
-        transform:translateX(100%);
-    }
-    50% {
-        transform:translateX(100%);
-    }
-    60% {
-        transform:translateX(0);
-    }
-    90% {
-        transform:translateX(0);
-    }
-    100%{
+    100% {
         transform:translateX(-100%);
     }
 }

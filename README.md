@@ -48,6 +48,59 @@
     "angular-ui-router": "0.2.13"
 
 ## Development
+Q
+├── bower.json (bower components: installed in client/www/lib)
+├── client
+│   ├── config.xml (ionic config file x)
+│   ├── ionic.project (for ionic x)
+│   ├── scss
+│   │   └── ionic.app.scss (for ionic x)
+│   └── www
+│       ├── css
+│       │   └── style.css (main css file for custom styles)
+│       ├── img
+│       │   ├── icon2.png (main logo)
+│       │   ├── icon.png (alternative logo)
+│       │   ├── ionic.png (ionic logo)
+│       │   ├── logoQ.png (large main logo)
+│       │   ├── notavailable.gif (image unavailable soundcloud image)
+│       │   ├── notavailable.jpg (image unavailable soundcloud image)
+│       │   ├── notavailable.png (image unavailable soundcloud image)
+│       │   └── playing.gif
+│       ├── index.html (main index file)
+│       ├── js
+│       │   ├── angular-soundmanager2-Q.js (soundplayer with socket config)
+│       │   ├── app.js (font-end main js)
+│       │   ├── controllers.js 
+│       │   └── services.js
+│       ├── lib
+│       │   └── angular-soundmanager2
+│       │       └── dist
+│       │           └── angular-soundmanager2-Q.js (original untouched)
+│       └── templates
+│           ├── landingPage.html (landing page)
+│           └── playlist.html (playlist index)
+├── _CONTRIBUTING.md
+├── _.editorconfig
+├── _.gitattributes
+├── _.gitignore
+├── _.jshintrc
+├── package.json
+├── _PRESS-RELEASE.md
+├── Procfile
+├── _README.md
+├── server
+│   ├── db
+│   │   ├── dbConfig.js
+│   │   ├── userController.js
+│   │   └── userModel.js
+│   ├── README.txt
+│   ├── routes.js (server routing)
+│   ├── server.js (main server)
+│   └── test.html (not used)
+├── _STYLE-GUIDE.md
+└── _.travis.yml
+
 
 ## Installing Dependencies
 

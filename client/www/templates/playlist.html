@@ -1,137 +1,61 @@
-<!-- <div id="playlist" class="centerDiv">
-     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-
-
-
-                <button play-all="songs">Play all</button>
-
-            </div>
-        </div>
-
-        <hr />
-
-        <div class="row">
-            <div class="col-md-12"> -->
-                <!-- init soundManager2 player -->
- <!--                <sound-manager></sound-manager>
-                <button play-all="songs">Play all</button>
-
-                <p>
-                    Currently Playing: {{ currentPlaying.title }} by {{ currentPlaying.artist }} ({{ currentPostion }} / {{ currentDuration }})
-                </p>
-
-                <div class="seekBase" seek-track>
-                    <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
-                </div>
-                <br />
-                <button play-music>Play</button>
-                -
-                <button pause-music>Pause</button>
-                -
-                <button stop-music>Stop</button>
-                -
-                <button repeat-music>Repeat ({{ repeat }})</button>
-                -
-                <button play-pause-toggle data-play="Play!" data-pause="Pause!">Play Toggle</button>
-
-                Is Playing: {{ isPlaying }}
-                <br/>
-                <br/>Volume: {{ volume }} -
-                <button music-volume data-type="increase">+</button>
-                -
-                <button music-volume data-type="decrease">-</button>
-                -
-                <button mute-music>Mute ({{ mute }})</button>
-                <br/>
-                <br/>
-                <button prev-track>Prev Track</button>
-                -
-                <button next-track>Next Track</button>
-                -
-                <button clear-playlist>Clear Playlist</button>
-                <br/>
-                <br/>
-                <h5>Playlist</h5>
-                <ul>
-                    <li ng-repeat="song in playlist">
-                        <a play-from-playlist="song">{{ song.title }}</a>
-                        -
-                        <a remove-from-playlist="song" data-index="{{$index}}">
-                            <small>(remove)</small>
-                        </a>
-                        <span ng-if="currentPlaying.id == song.id"> - (current)</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-  <form ng-submit='searchSong()'>
-   <input width="80%" ng-model='query'>
-   <button type="submit">SUBMIT</button>
-  </form>
-
-        <div ng-repeat = 'song in songs'>
-            <span add-song="song">{{ song.title }}</span>
-            <button music-player add-song='song'>+</button>
-    </div>
-
-</div> -->
-
-
-<div class="list list-inset bar bar-subheader">
-  <form ng-submit='searchSong()'>
-    <label class ='item item-input'>
-      <i class='icon ion-search placeholder-icon'></i>
-      <input type='text' placeholder='SoundCloud search...' ng-model="query" ng-change='searchSong()'>
-    </label>
-  </form>
+<!-- SUBHEADER -->
+<!-- Search Bar -->
+<div class="bar bar-subheader item-input-inset">
+  <label class="item-input-wrapper">
+    <i class="icon ion-ios-search placeholder-icon"></i>
+    <input type="search" placeholder="SoundCloud search..." ng-model="query" ng-change='searchSong()'>
+  </label>
+  <button class="button button-clear" ng-click='clearResults()'>
+    Cancel
+  </button>
 </div>
-<br>
+
+<!-- Search Results -->
 <div class='list list-inset searchResults'>
-       <!--  <ul class="list bar-subheader"> -->
   <div music-player="" add-song="song" ng-click='clearResults()' class="row searchResultsItem" ng-repeat='song in songs'>
     <span class="center thumb">  <img class='rounded right small'  src={{song.image}} ></span>
-
     <span class="center textcenter large">  {{song.title}} by {{song.artist}}</span>
-
-
   </div>
-    <!--    </ul> -->
 </div>
-<br>
-
+<!-- Sound Manager Init -->
 <sound-manager></sound-manager>
 
-
-
-               <!--  <div class="seekBase" seek-track>
-                    <div class="seekLoad" ng-style="{width : ( progress + '%' ) }"></div>
-                </div> -->
-
-
-
- <ion-scroll style="overflow:hidden; height:100%; margin-right:auto; margin-left:auto; width:80%" has-bouncing='true' ng-show="isHost()">
+<!-- CONTENT -->
+<!-- Playlist View: If you are the host -->
+<ion-content class="has-header has-footer has-subheader" ng-show="isHost()">
+  <div style="height:70%; margin-right:auto; margin-left:auto; width:80%">
+    <div class="row card" ng-show="playlist.length === 0">
+    <center>
+      <h3>There are no songs currently in your playlist.</h3>
+      <h4>Use the search bar at the top to search for songs and add to the playlist.</h4>
+    </center>
+    </div>
     <ul>
-
       <div class='row' ng-repeat="song in playlist">
-
         <div class="col-90">
-          <div play-from-playlist="song" ng-class="currentPlaying.id === song.id ? 'button button-positive button-block playlistItem' : 'button button-outline button-stable button-block playlistItem'">
+          <div play-from-playlist="song" ng-class="currentPlaying.id === song.id ? 'button button-royal button-block playlistItem' : 'button button-outline button-stable button-block playlistItem'">
           {{ song.title }} by {{song.artist}}
           </div>
         </div>
         <div ng-show="isHost()">
-          <a remove-from-playlist="song" data-index="{{$index}}" ng-class="currentPlaying.id === song.id ? 'button button-clear button-positive button-block' : 'button button-clear button-stable button-block'">
+          <a remove-from-playlist="song" data-index="{{$index}}" ng-class="currentPlaying.id === song.id ? 'button button-clear button-royal button-block' : 'button button-clear button-stable button-block'">
             <i class="ion-close-round"></i>
           </a>
         </div>
       </div>
     </ul>
-</ion-scroll>
+    </div>
+</ion-content>
 
-<ion-scroll style="overflow:hidden; height:100%; margin-right:auto; margin-left:auto; width:80%" has-bouncing='true' ng-show="!isHost()">
+<!-- Playlist View: If you are a guest -->
+<ion-content class="has-header has-footer has-subheader" ng-show="!isHost()">
+  <div style="height:70%; margin-right:auto; margin-left:auto; width:80%">
+    <div class="row card" ng-show="playlist.length === 0">
+    <center>
+      <h3>There are no songs currently in your playlist.</h3>
+      <h4>Use the search bar at the top to search for songs and add to the playlist.</h4>
+    </center>
+    </div>
     <ul>
       <div class='row' ng-repeat="song in playlist">
         <div class="col-90">
@@ -141,34 +65,27 @@
         </div>
       </div>
     </ul>
-</ion-scroll>
+  </div>
+</ion-content>
 
-
+<!-- FOOTER  -->
 <div class="bar bar-footer row row-center bar-stable">
-  <div class="col-30" style="margin-left: auto; margin-right: auto; float:left; min-width:240px" ng-show="isHost()">
-    <button play-music class="ion-play button button-outline button-positive circle bottomButton"></button>
-    <button pause-music class="ion-pause button button-outline button-positive bottomButton"></button>
-    <button stop-music class="ion-stop button button-outline button-positive bottomButton"></button>
-      <button prev-track class="ion-skip-backward button button-outline button-positive bottomButton"></button>
-    <button next-track class="ion-skip-forward button button-outline button-positive bottomButton"></button>
-
-    <button music-volume data-type="decrease" class="ion-android-volume-down button button-outline button-positive bottomButton"></button>
-    <button music-volume data-type="increase" class="ion-android-volume-up button button-outline button-positive bottomButton"></button>
-
-             <!--    <button clear-playlist class="ion-close-round button button-outline button-positive"></button>    </div> -->
+  <!-- Player Control Buttons: Only for host -->
+  <div class="col-20" style="margin-left: auto; margin-right: auto; float:left; min-width:160px" ng-show="isHost()">
+    <button play-music class="ion-play button button-outline button-royal circle bottomButton"></button>
+    <button pause-music class="ion-pause button button-outline button-royal bottomButton"></button>
+    <button prev-track class="ion-skip-backward button button-outline button-royal bottomButton"></button>
+    <button next-track class="ion-skip-forward button button-outline button-royal bottomButton"></button>
   </div>
 
-
-    <div class='nowplaying center '>
-      <!--  <span style="margin-right:10px; vertical-align: middle">
-
-          </span> -->
-          <span ng-show='currentPlaying.title' class='center small'>
-          <p class='animated fadeInUp'><img height="20" width="20" style="float: left; margin-right:5px" class="rounded" src={{currentPlaying.image}}> {{ currentPlaying.title }} by {{ currentPlaying.artist }}  {{ currentPostion }} / {{ currentDuration }}</p>
-
-          </span>
-
-    </div>
-
-
+  <!-- Now Playing: Seen by host and guest -->
+  <div ng-class="isHost() ? 'nowplayingHost center' : 'nowplaying center'">
+    <span ng-show='currentPlaying.title' class='marquee center small'>
+      <p>
+        <img height="28" width="28" style="float: left; margin-right:5px" class="rounded" src={{currentPlaying.image}}> 
+        <span class='center small'>{{ currentPlaying.title }} by {{ currentPlaying.artist }}  {{ currentPostion }} / {{ currentDuration }}
+        </span>
+      </p>
+    </span>
+  </div>
 </div>

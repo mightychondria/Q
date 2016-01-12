@@ -1,12 +1,3 @@
-/**
- * SoundManager2-Q
- * This file has been modified to work with our implementation of sockets.
- * Ctrl+F "socket" to see where the work was done.
- * Please note that there is a difference between adding songs to SoundManager and adding songs to the "Playlist." The "Playlist" is
- * the list of songs that are visible in the view. However, you can't merely push songs to the Playlist and expect them to work with
- * SoundManager. In order for songs to actually work with SoundManager they have to be added to SoundManager using addTrack()
-
-
 /** @license
  *
  * SoundManager 2: JavaScript Sound for the Web
@@ -100,7 +91,7 @@
             'whileplaying': null, // callback during play (position update)
             'onposition': null, // object containing times and function callbacks for positions of interest
             'onstop': null, // callback for "user stop"
-            'onfailure': 'nextTrack', // callback function for when playing fails
+            'onfailure': null, // callback function for when playing fails
             'onfinish': null, // callback function for "sound finished playing"
             'multiShot': true, // let sounds "restart" or layer on top of each other when played multiple times, rather than one-shot/one at a time
             'multiShotEvents': false, // fire multiple sound events (currently onfinish() only) when multiShot is enabled
@@ -225,8 +216,7 @@
         /**
          * a few private internals (OK, a lot. :D)
          */
-        var socket = window.socket,
-            SMSound,
+        var SMSound,
             sm2 = this,
             globalHTML5Audio = null,
             flash = null,
@@ -317,12 +307,6 @@
          * @param {object} options Option parameters, eg. { flashVersion: 9, url: '/path/to/swfs/' }
          * onready and ontimeout are also accepted parameters. call soundManager.setup() to see the full list.
          */
-        this.angularPlayerPlaylist = [],
-
-        this.socket = function() {
-            return socket;
-        },
-
         this.setup = function(options) {
             var noURL = (!sm2.url);
             // warn if flash options have already been applied
@@ -450,7 +434,6 @@
             if(!options.serverURL && options.autoPlay) {
                 oSound.play();
             }
-            
             return oSound;
         };
         /**
@@ -4436,7 +4419,6 @@ ngSoundManager.filter('humanTime', function () {
 
 ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
     function($rootScope, $log) {
-        
         var currentTrack = null,
             repeat = false,
             autoPlay = true,
@@ -4444,9 +4426,13 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
             volume = 90,
             trackProgress = 0,
             playlist = [],
-            socket = soundManager.socket();
-
+            socket = io('http://localhost:8000');
         
+        socket.on('getQueue', function(queue){
+            playlist = queue;
+            $rootScope.$broadcast('player:playlist', playlist);
+        });
+
         // socket.on('deleteSong', function(queue) {
         //     playlist = queue;
         //     $rootScope.$broadcast('player:playlist', playlist);
@@ -4632,34 +4618,17 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                 var inArrayKey = this.isInArray(this.getPlaylist(), track.id);
                 if(inArrayKey === false) {
                     //$log.debug('song does not exists in playlist');
+                    //add to sound manager
+                    soundManager.createSound({
+                        id: track.id,
+                        url: track.url
+                    });
                     //add to playlist
-
-                        this.addToPlaylist(track);
-                    
-                        //add to sound manager
-                        soundManager.createSound({
-                            id: track.id,
-                            url: track.url
-                        });
-                        socket.emit('addSong', track);
-                        $rootScope.$broadcast('player:playlist', playlist);
-                    //check to make sure track url isn't dead before adding it
-                    // $.get(track.url, function() {
-                    //     this.addToPlaylist(track);
-                        
-                    //     //add to sound manager
-                    //     soundManager.createSound({
-                    //         id: track.id,
-                    //         url: track.url
-                    //     });
-                    //     socket.emit('addSong', track);
-                    //     $rootScope.$broadcast('player:playlist', playlist);
-                    // }.bind(this)).error(function() {
-                    //     $('<div>Track url is dead!</div>').insertBefore('.nowplaying').delay(3000).fadeOut();
-                    //     console.log('track not found');
-                    // });
+                    socket.emit('addSong', track);
+                    // $rootScope.$broadcast('player:playlist', playlist);
 
 
+                    // this.addToPlaylist(track);
                 }
                 return track.id;
             },
@@ -4669,11 +4638,12 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                     this.stop();
                 }
                 //unload from soundManager
-                
+                soundManager.destroySound(song);
                 //remove from playlist
-                
+                playlist.splice(index, 1);
                 //once all done then broadcast
-                socket.emit('deleteSong', {song: song, index: index});
+
+                socket.emit('deleteSong', song);
                 
             },
             initPlayTrack: function(trackId, isResume) {
@@ -4853,7 +4823,7 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
 
 
 ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
-    function($filter, angularPlayer, $rootScope) {
+    function($filter, angularPlayer) {
         return {
             restrict: "E",
 
@@ -4871,26 +4841,6 @@ ngSoundManager.directive('soundManager', ['$filter', 'angularPlayer',
                 //     });
                 // });
                 var socket = angularPlayer.socket();
-
-                socket.on('getQueue', function (queue) {
-                    console.log('queue from server', queue)
-                    queue.forEach(function(song) {
-                        angularPlayer.addToPlaylist(song);
-                    });
-                }); 
-
-                socket.on('deleteSong', function (targetObj) {
-                    console.log(targetObj);
-                    soundManager.destroySound(targetObj.song);
-                    scope.$apply(function () {
-                        scope.playlist.splice(targetObj.index, 1);
-                    });
-                }); 
-
-                socket.on('newSong', function (newSong) {
-                    console.log('newSong from server', newSong)
-                    angularPlayer.addTrack(newSong);
-                }); 
                 
                 socket.on('currentlyPlaying', function(currentTrack) {
                     scope.$apply(function() {
@@ -4980,24 +4930,6 @@ ngSoundManager.directive('musicPlayer', ['angularPlayer', '$log',
         };
     }
 ]);
-
-ngSoundManager.factory('socketFactory', ['angularPlayer', '$log', function (angularPlayer, $log) {
-    soundManager.socket().on('getQueue', function(queue){
-        $log.log(queue);
-        for(var i = 0; i < queue.length; i++) {
-            addTrack(queue[i]);
-        }
-        playlist = queue;
-        soundManager.angularPlayerPlaylist = playlist;
-        $rootScope.$broadcast('player:playlist', playlist);
-    });
-    return {
-        init: function() {
-                $log.log('socket factory');
-            }
-        }
-    }]);
-    
 
 
 ngSoundManager.directive('playFromPlaylist', ['angularPlayer', function (angularPlayer) {

@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../client/www'));
 
-var port = 8000;
+var port = process.env.PORT || 8000;
 server.listen(port);
 
 // This empties the database and seeds the database with one user with an empty queue (no multi-user functionality yet)
@@ -30,28 +30,41 @@ userModel.remove({}, function() {
   });
 });
 
+
+// io.configure(function () {  
+// });
+
+
 io.on('connection', function (socket) {
-  User.getQueue(function(queue) {
-    socket.emit('getQueue', queue);
-    socket.broadcast.emit('getQueue', queue);
+  console.log(socket);
+
+  // This line needed only for Heroku, comment it out if serving locally
+  // io.set("transports", ["polling"]); 
+
+  // User.getQueue(function(queue) {
+  //   socket.emit('getQueue', queue);
+  // });
+
+  socket.on('newGuest', function() {
+    User.getQueue(function(queue) {
+      socket.emit('getQueue', queue);
+    });
   });
 
   socket.on('addSong', function (newSong) {
     User.addSong(newSong, function() {
-      User.getQueue(function(queue) {
-        socket.emit('getQueue', queue);
-        socket.broadcast.emit('getQueue', queue);
-      });
+      socket.emit('newSong', newSong);
+      socket.broadcast.emit('newSong', newSong);
+      // User.getQueue(function(queue) {
+      // });
     });
   });
 
   socket.on('deleteSong', function (target) {
-    User.deleteSong(target, function() {
-      User.getQueue(function(queue) {
-        socket.emit('getQueue', queue);
-        socket.broadcast.emit('getQueue', queue);
-      })
-    })
+    User.deleteSong(target.song, function() {
+      socket.emit('deleteSong', target);
+      socket.broadcast.emit('deleteSong', target);
+    });
   });
 
   socket.on('progress', function (data) {
@@ -59,7 +72,6 @@ io.on('connection', function (socket) {
   });
 
   socket.on('currentlyPlaying', function (data) {
-    console.log('currently playing', data);
     socket.emit('currentlyPlaying', data);
     socket.broadcast.emit('currentlyPlaying', data);
   });
