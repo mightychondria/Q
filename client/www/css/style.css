@@ -31,6 +31,21 @@ div.center{
   float: left;
 }
 
+.nowplayingHost{
+  border-radius:5px;
+  white-space:nowrap;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  position: relative;
+  height:35px;
+  width:90%;
+  padding:5px;
+  color:#886aea;
+  border: 1px solid #886aea;
+  overflow: hidden;
+  float: left;
+}
+
 .searchResults{
   position: absolute;
   top: 5rem;
