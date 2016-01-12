@@ -33,12 +33,12 @@
     <ul>
       <div class='row' ng-repeat="song in playlist">
         <div class="col-90">
-          <div play-from-playlist="song" ng-class="currentPlaying.id === song.id ? 'button button-positive button-block playlistItem' : 'button button-outline button-stable button-block playlistItem'">
+          <div play-from-playlist="song" ng-class="currentPlaying.id === song.id ? 'button button-royal button-block playlistItem' : 'button button-outline button-stable button-block playlistItem'">
           {{ song.title }} by {{song.artist}}
           </div>
         </div>
         <div ng-show="isHost()">
-          <a remove-from-playlist="song" data-index="{{$index}}" ng-class="currentPlaying.id === song.id ? 'button button-clear button-positive button-block' : 'button button-clear button-stable button-block'">
+          <a remove-from-playlist="song" data-index="{{$index}}" ng-class="currentPlaying.id === song.id ? 'button button-clear button-royal button-block' : 'button button-clear button-stable button-block'">
             <i class="ion-close-round"></i>
           </a>
         </div>
@@ -72,14 +72,14 @@
 <div class="bar bar-footer row row-center bar-stable">
   <!-- Player Control Buttons: Only for host -->
   <div class="col-20" style="margin-left: auto; margin-right: auto; float:left; min-width:160px" ng-show="isHost()">
-    <button play-music class="ion-play button button-outline button-positive circle bottomButton"></button>
-    <button pause-music class="ion-pause button button-outline button-positive bottomButton"></button>
-    <button prev-track class="ion-skip-backward button button-outline button-positive bottomButton"></button>
-    <button next-track class="ion-skip-forward button button-outline button-positive bottomButton"></button>
+    <button play-music class="ion-play button button-outline button-royal circle bottomButton"></button>
+    <button pause-music class="ion-pause button button-outline button-royal bottomButton"></button>
+    <button prev-track class="ion-skip-backward button button-outline button-royal bottomButton"></button>
+    <button next-track class="ion-skip-forward button button-outline button-royal bottomButton"></button>
   </div>
 
   <!-- Now Playing: Seen by host and guest -->
-  <div class='nowplaying center'>
+  <div ng-class="isHost() ? 'nowplayingHost center' : 'nowplaying center'">
     <span ng-show='currentPlaying.title' class='marquee center small'>
       <p>
         <img height="28" width="28" style="float: left; margin-right:5px" class="rounded" src={{currentPlaying.image}}> 

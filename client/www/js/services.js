@@ -11,7 +11,7 @@ angular.module('Q.services', [
       }).then(function(response){
         return response.data;
       })
-    }
+  }
 
   var addSong = function (song){
     return $http ({
@@ -19,7 +19,6 @@ angular.module('Q.services', [
       url: '/',
       data: song
     })
-
   }
 
   var searchSongs = function(query){
@@ -27,45 +26,29 @@ angular.module('Q.services', [
       client_id: 'f270bdc572dc8380259d38d8015bdbe7'
     });
 
-
     return SC.get('/tracks', {
       q: query,
     }).then(function(tracks) {
       return tracks;
     });
   }
-    // SC.get("/groups/55517/tracks", {
-    //         limit: 5
-    //     }, function(tracks) {
-    //         for (var i = 0; i < tracks.length; i ++) {
-    //             SC.stream( '/tracks/' + tracks[i].id, function( sm_object ){
-    //                 var track = {
-    //                     id: tracks[i].id,
-    //                     title: tracks[i].title,
-    //                     artist: tracks[i].genre,
-    //                     url: sm_object.url
-    //                 };
 
+  // isHostData in factory stores whether or not
+  // the current user is the host
+  
+  var isHostData = false;
 
-    //                     tracks.push(track);
+  var isHost = function(){
+    return isHostData;
+  }
 
-    //             });
-    //         }
-    //     });
-    // return tracks;
-    var isHostData = false;
+  var makeHost = function () {
+    isHostData = true;
+  }
 
-var isHost = function(){
-  return isHostData;
-}
-
-var makeHost = function () {
-  isHostData = true;
-}
-
-var makeGuest = function(){
-  isHostData = false;
-}
+  var makeGuest = function(){
+    isHostData = false;
+  }
 
   return {
     getSongs: getSongs,
@@ -75,5 +58,4 @@ var makeGuest = function(){
     makeGuest: makeGuest,
     isHost: isHost
   }
-
 })
