@@ -4625,10 +4625,8 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                     //$log.debug('song does not exists in playlist');
                     //add to playlist
 
-                    //check to make sure track url isn't dead before adding it
-                    $.get(track.url, function() {
                         this.addToPlaylist(track);
-                        
+                    
                         //add to sound manager
                         soundManager.createSound({
                             id: track.id,
@@ -4636,10 +4634,21 @@ ngSoundManager.factory('angularPlayer', ['$rootScope', '$log',
                         });
                         socket.emit('addSong', track);
                         $rootScope.$broadcast('player:playlist', playlist);
-                    }.bind(this)).error(function() {
-                        $('<div>Track url is dead!</div>').insertBefore('.nowplaying').delay(3000).fadeOut();
-                        console.log('track not found');
-                    });
+                    //check to make sure track url isn't dead before adding it
+                    // $.get(track.url, function() {
+                    //     this.addToPlaylist(track);
+                        
+                    //     //add to sound manager
+                    //     soundManager.createSound({
+                    //         id: track.id,
+                    //         url: track.url
+                    //     });
+                    //     socket.emit('addSong', track);
+                    //     $rootScope.$broadcast('player:playlist', playlist);
+                    // }.bind(this)).error(function() {
+                    //     $('<div>Track url is dead!</div>').insertBefore('.nowplaying').delay(3000).fadeOut();
+                    //     console.log('track not found');
+                    // });
 
 
                 }
