@@ -25,15 +25,15 @@ http://qplayer.herokuapp.com/
 ## Usage
 For Q to work properly, a designated host needs to login by clicking 'CREATE ROOM' on the login page and entering 'test' as the password. The host also needs to login before any other user adds a song to the queue; this is a known issue and flawed feature. Users who are not the host must click 'ENTER ROOM' to join the host's room. 
 
-    Multiple rooms for different hosts is a feature that has not yet been developed. Ideally, a host should be able to create a room which will have a distinct URL has that the host can give to other users. Other users can use this url to access the host's playlist. 
+Multiple rooms for different hosts is a feature that has not yet been developed. Ideally, a host should be able to create a room which will have a distinct URL has that the host can give to other users. Other users can use this url to access the host's playlist. 
 
-    It was also concious decsion to enhace user experience to not handle strict authentication for users to make it easy and effortless for users to join and create rooms.
+It was also conscious decsion to enhace user experience to not handle strict authentication for users to make it easy and effortless for users to join and create rooms.
 
-    TO start Q's server, first start mongodb server (mongod) and run npm start inside the project's main directory.
+TO start Q's server, first start mongodb server (mongod) and run npm start inside the project's main directory.
 
-    Q uses soundcloud's API.  In the current implementation, we had the client ID visible in the front end, but in later iterations, this searching should be moved to and hidden in the backend.
+Q uses soundcloud's API.  In the current implementation, we had the client ID visible in the front end, but in later iterations, this searching should be moved to and hidden in the backend.
     
-    **Q uses ionic framework to enhance UI for mobile users: http://ionicframework.com/**
+**Q uses ionic framework to enhance UI for mobile users: http://ionicframework.com/**
 
 ## Requirements
 
@@ -117,7 +117,7 @@ Q <br>
 
 ## Roadmap
 
-        View the project roadmap www.github.com/mightychondria/Q/issues
+View the project roadmap www.github.com/mightychondria/Q/issues
 
 
 ## Contributing
